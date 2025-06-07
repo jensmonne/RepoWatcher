@@ -61,7 +61,7 @@ public class BotService
 
     public async Task HandlePushEventAsync(GitHubPushPayload payload)
     {
-        var channel = Client.GetChannel(1380559484501360781) as IMessageChannel;
+        var channel = Client.GetChannel(1380548875575759041) as IMessageChannel;
         if (channel == null) return;
         
         var unixTime = new DateTimeOffset(payload.HeadCommit.Timestamp).ToUnixTimeSeconds();
