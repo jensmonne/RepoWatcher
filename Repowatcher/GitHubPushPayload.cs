@@ -33,4 +33,16 @@ public class Commit
 
     [JsonPropertyName("message")]
     public string Message { get; set; }
+
+    [JsonPropertyName("timestamp")]
+    public DateTime Timestamp { get; set; }
+
+    [JsonPropertyName("added")]
+    public List<string> Added { get; set; } = new();
+
+    [JsonPropertyName("removed")]
+    public List<string> Removed { get; set; } = new();
+
+    [JsonPropertyName("modified")]
+    public List<string> Modified { get; set; } = new();
 }
