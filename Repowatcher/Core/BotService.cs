@@ -34,10 +34,10 @@ public class BotService
 
         var embed = new EmbedBuilder()
             .WithTitle("🚀 GitHub Push")
-            .AddField("Repo", payload.Repo)
-            .AddField("Pusher", payload.Pusher)
-            .AddField("Commit", payload.Commit.Length >= 7 ? payload.Commit.Substring(0, 7) : payload.Commit)
-            .AddField("Message", payload.Message)
+            .AddField("Repo", payload.Repository.FullName)
+            .AddField("Pusher", payload.Pusher.Name)
+            .AddField("Commit", payload.HeadCommit.Id.Substring(0, 7))
+            .AddField("Message", payload.HeadCommit.Message)
             .WithColor(Color.Green)
             .WithTimestamp(DateTimeOffset.Now)
             .Build();
