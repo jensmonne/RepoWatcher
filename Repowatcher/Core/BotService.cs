@@ -68,7 +68,7 @@ public class BotService
         var timeString = $"<t:{unixTime}:f>";
 
         var embed = new EmbedBuilder()
-            .WithTitle("🚀 GitHub Push")
+            .WithTitle("GitHub Push 🫸")
             .AddField("Repository", payload.Repository.FullName)
             .AddField("Pusher", payload.Pusher.Name)
             .AddField("Time", timeString)
