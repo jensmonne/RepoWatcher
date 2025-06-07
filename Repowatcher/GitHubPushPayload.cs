@@ -1,7 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Repowatcher;
-
 public class GitHubPushPayload
 {
     [JsonPropertyName("repository")]
@@ -18,6 +16,9 @@ public class Repository
 {
     [JsonPropertyName("full_name")]
     public string FullName { get; set; }
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; }
 }
 
 public class Pusher

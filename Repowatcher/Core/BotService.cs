@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using Repowatcher;
 
 namespace McCoy.Core;
 
@@ -23,9 +22,42 @@ public class BotService
         Client.Ready += () =>
         {
             Console.WriteLine($"Logged in as {Client.CurrentUser.Username}#{Client.CurrentUser.Discriminator}");
+            Client.SetGameAsync("your Repository", type: ActivityType.Watching);
             return Task.CompletedTask;
         };
+        
+        Client.SelectMenuExecuted += async (selectMenu) =>
+        {
+            if (selectMenu.Data.CustomId != "push_files_select")
+                return;
+
+            if (!_payloadCache.TryGetValue(selectMenu.Message.Id, out var payload))
+            {
+                await selectMenu.RespondAsync("Sorry, context expired or unavailable.", ephemeral: true);
+                return;
+            }
+
+            string response = selectMenu.Data.Values.ElementAt(0) switch
+            {
+                "added" => FormatFileList("Added files", payload.HeadCommit.Added),
+                "modified" => FormatFileList("Modified files", payload.HeadCommit.Modified),
+                "removed" => FormatFileList("Removed files", payload.HeadCommit.Removed),
+                _ => "Unknown option"
+            };
+
+            await selectMenu.RespondAsync(response, ephemeral: true);
+        };
     }
+    
+    private string FormatFileList(string title, IReadOnlyCollection<string> files)
+    {
+        if (files == null || files.Count == 0)
+            return $"{title}: None";
+
+        return $"{title}:\n" + string.Join("\n", files);
+    }
+    
+    private readonly Dictionary<ulong, GitHubPushPayload> _payloadCache = new();
 
     public async Task HandlePushEventAsync(GitHubPushPayload payload)
     {
@@ -41,6 +73,7 @@ public class BotService
             .AddField("Pusher", payload.Pusher.Name)
             .AddField("Time", timeString)
             .AddField("Message", payload.HeadCommit.Message)
+            .AddField("Description", string.IsNullOrWhiteSpace(payload.Repository.Description) ? "No description given" : payload.Repository.Description)
             .WithColor(Color.Green)
             .Build();
 
@@ -55,6 +88,8 @@ public class BotService
             .WithSelectMenu(selectMenu)
             .Build();
         
-        await channel.SendMessageAsync(embed: embed, components: component);
+        var sentMessage = await channel.SendMessageAsync(embed: embed, components: component);
+        
+        _payloadCache[sentMessage.Id] = payload;
     }
 }
