@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+*.sln
+Dockerfile
+.dockerignore
+.git/
+.gitignore
+.github/
+*.log
+README.md
+*.md
+docs/
+LICENSE
