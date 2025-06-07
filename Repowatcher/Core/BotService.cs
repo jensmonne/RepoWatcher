@@ -73,7 +73,6 @@ public class BotService
             .AddField("Pusher", payload.Pusher.Name)
             .AddField("Time", timeString)
             .AddField("Message", payload.HeadCommit.Message)
-            .AddField("Description", string.IsNullOrWhiteSpace(payload.Repository.Description) ? "No description given" : payload.Repository.Description)
             .WithColor(Color.Green)
             .Build();
 
