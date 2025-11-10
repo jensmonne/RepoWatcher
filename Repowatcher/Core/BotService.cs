@@ -61,9 +61,16 @@ public class BotService
 
     public async Task HandlePushEventAsync(GitHubPushPayload payload)
     {
-        var channel = Client.GetChannel(1380559484501360781) as IMessageChannel;
-        if (channel == null) return;
+        var channelIdString = DotNetEnv.Env.GetString("CHANNEL_ID");
+
+        if (!ulong.TryParse(channelIdString, out ulong channelId))
+        {
+            Console.WriteLine("Invalid CHANNEL_ID in .env file");
+            return;
+        }
         
+        var channel = Client.GetChannel(channelId) as IMessageChannel;
+        if (channel == null) return;
         var unixTime = new DateTimeOffset(payload.HeadCommit.Timestamp).ToUnixTimeSeconds();
         var timeString = $"<t:{unixTime}:f>";
 
