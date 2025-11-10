@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Discord;
 
-namespace McCoy.Core;
+namespace Repowatcher.Core;
 
 public class BotHostedService : IHostedService
 {

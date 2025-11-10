@@ -2,7 +2,7 @@
 using Discord.Interactions;
 using Discord.WebSocket;
 using DotNetEnv;
-using McCoy.Core;
+using Repowatcher.Core;
 
 namespace Repowatcher;
 

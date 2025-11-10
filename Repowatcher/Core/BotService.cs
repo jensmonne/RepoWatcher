@@ -2,7 +2,7 @@
 using Discord.Interactions;
 using Discord.WebSocket;
 
-namespace McCoy.Core;
+namespace Repowatcher.Core;
 
 public class BotService
 {
